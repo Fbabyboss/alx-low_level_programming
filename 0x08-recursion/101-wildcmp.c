@@ -1,4 +1,5 @@
 #include "main.h"
+#include <stdio.h>
 
 /**
  * wildcmp - Compares two strings, considering wildcard characters.
