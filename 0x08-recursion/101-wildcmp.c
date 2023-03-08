@@ -1,27 +1,26 @@
 #include "main.h"
-#include <stdio.h>
-
 /**
- * wildcmp - Compares two strings, considering wildcard characters.
- * @s1: The first string to be compared.
- * @s2: The second string to be compared - may contain wildcards.
+ * wildcmp - compares two strings and returns 1
+ * if the strings can be considered identical,
+ * otherwise return 0.
+ * @s1: the normal string
+ * @s2: the special string containing "*"
  *
- * Return: If the strings can be considered identical - 1.
- *         Otherwise - 0.
+ * Return: 1 if identical, else 0
  */
 int wildcmp(char *s1, char *s2)
 {
-	if (*s2 == '*')
-	{
-		iterate_wild(&s2);
-		s2 = postfix_match(s1, s2);
-	}
-
-	if (*s2 == '\0')
+	if (*s2 == '\0' && *s1 == '\0')
 		return (1);
 
-	if (*s1 != *s2)
+	if (*s2 == '*' && *(s2 + 1) != '\0' && *s1 == '\0')
 		return (0);
 
-	return (wildcmp(++s1, ++s2));
+	if (*s1 == *s2)
+		return (wildcmp(s1 + 1, s2 + 1));
+
+	if (*s2 == '*')
+		return (wildcmp(s1, s2 + 1) || wildcmp(s1 + 1, s2));
+
+	return (0);
 }
